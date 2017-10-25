@@ -5,24 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lab5eget"
         mc:Ignorable="d"
-        Title="MainWindow" Height="627.333" Width="525">
+        Title="MainWindow" Height="328" Width="525" ResizeMode="NoResize">
     <Grid x:Name="Själva_Fönstret" Loaded="LoadMainFrame">
         <ListBox x:Name="UserListBox" HorizontalAlignment="Left" Height="174" Margin="191,63,0,0" VerticalAlignment="Top" Width="100" SelectionChanged="SelectionUserListBox"/>
         <ListBox x:Name="AdminListBox" HorizontalAlignment="Left" Height="174" Margin="393,62,0,0" VerticalAlignment="Top" Width="100" SelectionChanged="SelectionAdminListBox"/>
         <Label Content="User" HorizontalAlignment="Left" Margin="221,31,0,0" VerticalAlignment="Top"/>
         <Label Content="Admin" HorizontalAlignment="Left" Margin="423,30,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="NameBox" HorizontalAlignment="Left" Height="23" Margin="10,62,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="EmailBox" HorizontalAlignment="Left" Height="23" Margin="10,90,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="NameBox" HorizontalAlignment="Left" Height="23" Margin="10,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" d:IsHidden="True"/>
+        <TextBox x:Name="EmailBox" HorizontalAlignment="Left" Height="23" Margin="10,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Label Content="Name" HorizontalAlignment="Left" Margin="135,61,0,0" VerticalAlignment="Top"/>
         <Label Content="Email" HorizontalAlignment="Left" Margin="135,90,0,0" VerticalAlignment="Top"/>
         <Button x:Name="MakeAdminButton" Content="Make Admin" HorizontalAlignment="Left" Margin="305,98,0,0" VerticalAlignment="Top" Width="75" Click="MakingAdmin"/>
         <Button x:Name="MakeUserButton" Content="Make User" HorizontalAlignment="Left" Margin="305,177,0,0" VerticalAlignment="Top" Width="75" Click="MakingUser"/>
         <Button x:Name="CreateUserButton" Content="Create User" HorizontalAlignment="Left" Margin="10,118,0,0" VerticalAlignment="Top" Width="120" Click="Creating"/>
         <Button x:Name="DeleteButton" Content="Delete" HorizontalAlignment="Left" Margin="10,167,0,0" VerticalAlignment="Top" Width="120" Click="Deleting"/>
-        <Button x:Name="ChangeButton" Content="Change" HorizontalAlignment="Left" Margin="10,143,0,0" VerticalAlignment="Top" Width="57" Click="Changer"/>
-        <Button x:Name="ConfirmButton" Content="Confirm" HorizontalAlignment="Left" Margin="72,143,0,0" VerticalAlignment="Top" Width="57"/>
+        <Button x:Name="ChangeButton" Content="Change" HorizontalAlignment="Left" Margin="10,143,0,0" VerticalAlignment="Top" Width="120" Click="Changer"/>
+        
         <TextBox x:Name="EmailDisplay" HorizontalAlignment="Left" Height="23" Margin="246,251,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top" Width="186" TextAlignment="Center" IsEnabled="False"/>
-        <TextBlock x:Name="DebugBox" HorizontalAlignment="Left" Margin="10,191,0,0" TextWrapping="Wrap" Text="Debug" VerticalAlignment="Top" Height="361" Width="168"/>
+       
         <DockPanel x:Name="MiniPanel" Margin="0,0,0,162">
             <Menu DockPanel.Dock="Top" Height="22" Margin="0,0,-0.333,0">
                 <MenuItem x:Name="FileMenu" Header="File">

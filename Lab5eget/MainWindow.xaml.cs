@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
-using Microsoft.Win32;
 
 
 namespace Lab5eget
@@ -33,13 +32,15 @@ namespace Lab5eget
             InitializeComponent();
 
         }
+        // Loading Program
 
         private void LoadMainFrame(object sender, RoutedEventArgs e)
         {
             string[] opener;
-
-            opener = System.IO.File.ReadAllLines(@"C:\Users\Tobias\Documents\Visual Studio 2017\Projects\ITHS\Lab5eget\UserGallery.txt");
-
+            System.IO.FileStream UserFilar = System.IO.File.OpenWrite(@"UserGallery.txt");
+            UserFilar.Close();
+            
+            opener = System.IO.File.ReadAllLines(@"UserGallery.txt");
             for (int ii=0; ii<opener.Length; ii = ii + 2)
             {
                 ProfileData user = new ProfileData();
@@ -48,7 +49,9 @@ namespace Lab5eget
                 UserList.Add(user);
                 UserListBox.Items.Add(opener[ii]);
             }
-            opener = System.IO.File.ReadAllLines(@"C:\Users\Tobias\Documents\Visual Studio 2017\Projects\ITHS\Lab5eget\AdminGallery.txt");
+            System.IO.FileStream AdminFilar = System.IO.File.OpenWrite(@"AdminGallery.txt");
+            AdminFilar.Close();
+            opener = System.IO.File.ReadAllLines(@"AdminGallery.txt");
 
             for (int ii = 0; ii < opener.Length; ii = ii + 2)
             {
@@ -62,11 +65,11 @@ namespace Lab5eget
 
             ChangeButton.IsEnabled = false;
             DeleteButton.IsEnabled = false;
-            ConfirmButton.IsEnabled = false;
             MakeAdminButton.IsEnabled = false;
             MakeUserButton.IsEnabled = false;
         }
 
+        // Creating New User
 
         private void Creating(object sender, RoutedEventArgs e)
         {
@@ -86,12 +89,13 @@ namespace Lab5eget
                     user.EmailData = EmailBox.Text.ToLower();
                     UserList.Add(user);
                     UserListBox.Items.Add(NameBox.Text);
+                    NameBox.Text = "";
+                    EmailBox.Text = "";
                 }
                 else
                 {
                     MessageBox.Show("That Email is already in use!");
                 }
-                DebugBox.Text = UserList.Count.ToString() + " detta " + UserListBox.SelectedIndex;
             }
             else
             {
@@ -103,11 +107,13 @@ namespace Lab5eget
         private void SelectionUserListBox(object sender, SelectionChangedEventArgs e)
         {
 
-
+            // Selecting User
             AdminListBox.SelectedIndex = -1;
             if (UserListBox.SelectedIndex > -1 && UserListBox.SelectedIndex < UserList.Count)
             {
                 EmailDisplay.Text = UserList[UserListBox.SelectedIndex].EmailData;
+                NameBox.Text = UserList[UserListBox.SelectedIndex].NameData;
+                EmailBox.Text = UserList[UserListBox.SelectedIndex].EmailData;
                 ChangeButton.IsEnabled = true;
                 DeleteButton.IsEnabled = true;
                 MakeAdminButton.IsEnabled = true;
@@ -119,23 +125,19 @@ namespace Lab5eget
                 MakeAdminButton.IsEnabled = false;
                 EmailDisplay.Text = "Display Selected Profils Email";
             }
-            // debug
-            string debugging = "";
-            for (int ii = 0; ii < UserList.Count; ii++)
-            {
-                debugging = debugging + "\r" + ii + " " + UserList[ii].EmailData;
-            }
 
-            DebugBox.Text = UserList.Count.ToString() + " detta " + UserListBox.SelectedIndex + " " + debugging;
         }
 
         private void SelectionAdminListBox(object sender, SelectionChangedEventArgs e)
         {
-            UserListBox.SelectedIndex = -1;
 
+            // Selecting Admin
+            UserListBox.SelectedIndex = -1;
             if (AdminListBox.SelectedIndex > -1 && AdminListBox.SelectedIndex < AdminList.Count)
             {
                 EmailDisplay.Text = AdminList[AdminListBox.SelectedIndex].EmailData;
+                NameBox.Text = AdminList[AdminListBox.SelectedIndex].NameData;
+                EmailBox.Text = AdminList[AdminListBox.SelectedIndex].EmailData;
                 ChangeButton.IsEnabled = true;
                 DeleteButton.IsEnabled = true;
                 MakeUserButton.IsEnabled = true;
@@ -173,16 +175,8 @@ namespace Lab5eget
                 AdminListBox.Items.Remove(AdminListBox.Items[AdminListBox.SelectedIndex]);
             }
 
-            //debug
-            string debugging = "";
-            for (int ii = 0; ii < UserList.Count; ii++)
-            {
-                debugging = debugging + "\r" + ii + " " + UserList[ii].EmailData;
-            }
-
-            DebugBox.Text = UserList.Count.ToString() + " detta " + UserListBox.SelectedIndex + " " + debugging;
         }
-
+        // Change
         private void Changer(object sender, RoutedEventArgs e)
         {
             var match = Regex.Matches(EmailBox.Text.ToLower(), emailPattern);
@@ -196,24 +190,24 @@ namespace Lab5eget
                                       where Looker.EmailData == EmailBox.Text.ToLower()
                                       where Looker.EmailData != AdminList[AdminListBox.SelectedIndex].EmailData
                                       select Looker;
-                if (LookInUserList.Count() + LookInAdminList.Count() == 0)
+                if ((LookInUserList.Count() + LookInAdminList.Count()) == 0)
                 {
 
                     if (UserListBox.SelectedIndex > -1)
                     {
-                        // NameBox.Text = UserList[UserListBox.SelectedIndex].NameData;
-                        // EmailBox.Text = UserList[UserListBox.SelectedIndex].EmailData;
                         UserList[UserListBox.SelectedIndex].EmailData = EmailBox.Text.ToLower();
                         UserList[UserListBox.SelectedIndex].NameData = NameBox.Text;
                         UserListBox.Items[UserListBox.SelectedIndex] = NameBox.Text;
+                        EmailBox.Text = "";
+                        NameBox.Text = "";
                     }
                     else if (AdminListBox.SelectedIndex > -1)
                     {
-                        //   NameBox.Text = AdminList[AdminListBox.SelectedIndex].NameData;
-                        //  EmailBox.Text = AdminList[AdminListBox.SelectedIndex].EmailData;
                         AdminList[AdminListBox.SelectedIndex].EmailData = EmailBox.Text.ToLower();
                         AdminList[AdminListBox.SelectedIndex].NameData = NameBox.Text;
                         AdminListBox.Items[AdminListBox.SelectedIndex] = NameBox.Text;
+                        EmailBox.Text = "";
+                        NameBox.Text = "";
                     }
                 }
                 else
@@ -295,14 +289,14 @@ namespace Lab5eget
             {
                 saveUserStrign = saveUserStrign + UserList[ii].NameData + "\n" + UserList[ii].EmailData + "\n";
             }
-            System.IO.File.WriteAllText(@"C:\Users\Tobias\Documents\Visual Studio 2017\Projects\ITHS\Lab5eget\UserGallery.txt", saveUserStrign);
+            System.IO.File.WriteAllText(@"UserGallery.txt", saveUserStrign);
             string saveAdminStrign = "";
             ProfileData admin = new ProfileData();
             for (int ii = 0; ii < AdminList.Count(); ii++)
             {
                 saveAdminStrign = saveAdminStrign + AdminList[ii].NameData + "\n" + AdminList[ii].EmailData + "\n";
             }
-            System.IO.File.WriteAllText(@"C:\Users\Tobias\Documents\Visual Studio 2017\Projects\ITHS\Lab5eget\AdminGallery.txt", saveAdminStrign);
+            System.IO.File.WriteAllText(@"AdminGallery.txt", saveAdminStrign);
         }
     }
 
