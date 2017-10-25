@@ -23,6 +23,13 @@
         <Button x:Name="ConfirmButton" Content="Confirm" HorizontalAlignment="Left" Margin="72,143,0,0" VerticalAlignment="Top" Width="57"/>
         <TextBox x:Name="EmailDisplay" HorizontalAlignment="Left" Height="23" Margin="246,251,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top" Width="186" TextAlignment="Center" IsEnabled="False"/>
         <TextBlock x:Name="DebugBox" HorizontalAlignment="Left" Margin="10,191,0,0" TextWrapping="Wrap" Text="Debug" VerticalAlignment="Top" Height="361" Width="168"/>
-
+        <DockPanel x:Name="MiniPanel" Margin="0,0,0,162">
+            <Menu DockPanel.Dock="Top" Height="22" Margin="0,0,-0.333,0">
+                <MenuItem x:Name="FileMenu" Header="File">
+                    <MenuItem x:Name="SaveFlik" Header="_Save" Click="SavingFile"/>
+                </MenuItem>
+            </Menu>
+            <StackPanel Margin="0,0,0,86"></StackPanel>
+        </DockPanel>
     </Grid>
 </Window>
