@@ -20,9 +20,9 @@
         <Button x:Name="CreateUserButton" Content="Create User" HorizontalAlignment="Left" Margin="10,118,0,0" VerticalAlignment="Top" Width="120" Click="Creating"/>
         <Button x:Name="DeleteButton" Content="Delete" HorizontalAlignment="Left" Margin="10,167,0,0" VerticalAlignment="Top" Width="120" Click="Deleting"/>
         <Button x:Name="ChangeButton" Content="Change" HorizontalAlignment="Left" Margin="10,143,0,0" VerticalAlignment="Top" Width="120" Click="Changer"/>
-        
-        <TextBox x:Name="EmailDisplay" HorizontalAlignment="Left" Height="23" Margin="246,251,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top" Width="186" TextAlignment="Center" IsEnabled="False"/>
-       
+
+        <TextBox x:Name="EmailDisplay" HorizontalAlignment="Left" Height="23" Margin="191,251,0,0" TextWrapping="Wrap" Text="Display Selected Profils Email and Name" VerticalAlignment="Top" Width="302" TextAlignment="Center" IsEnabled="False"/>
+
         <DockPanel x:Name="MiniPanel" Margin="0,0,0,162">
             <Menu DockPanel.Dock="Top" Height="22" Margin="0,0,-0.333,0">
                 <MenuItem x:Name="FileMenu" Header="File">

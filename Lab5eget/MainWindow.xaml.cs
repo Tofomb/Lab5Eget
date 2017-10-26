@@ -25,6 +25,7 @@ namespace Lab5eget
         public List<ProfileData> UserList = new List<ProfileData>();
         public List<ProfileData> AdminList = new List<ProfileData>();
         public string emailPattern = @"\b[a-z\d]+@[a-z\d]+.[a-z\d]+\b";
+        public string namePattern = @"\w";
 
         public MainWindow()
         {
@@ -74,27 +75,36 @@ namespace Lab5eget
         private void Creating(object sender, RoutedEventArgs e)
         {
             var match = Regex.Matches(EmailBox.Text.ToLower(), emailPattern);
+            var namematch = Regex.Matches(NameBox.Text.ToLower(), namePattern);
             if (match.Count == 1)
             {
-                var LookInUserList = from Looker in UserList
-                                     where Looker.EmailData == EmailBox.Text.ToLower()
-                                     select Looker;
-                var LookInAdminList = from Looker in AdminList
-                                      where Looker.EmailData == EmailBox.Text.ToLower()
-                                      select Looker;
-                if (LookInUserList.Count() + LookInAdminList.Count() == 0)
+                if (namematch.Count > 0)
                 {
-                    ProfileData user = new ProfileData();
-                    user.NameData = NameBox.Text;
-                    user.EmailData = EmailBox.Text.ToLower();
-                    UserList.Add(user);
-                    UserListBox.Items.Add(NameBox.Text);
-                    NameBox.Text = "";
-                    EmailBox.Text = "";
+                    var LookInUserList = from Looker in UserList
+                                         where Looker.EmailData == EmailBox.Text.ToLower()
+                                         select Looker;
+                    var LookInAdminList = from Looker in AdminList
+                                          where Looker.EmailData == EmailBox.Text.ToLower()
+                                          select Looker;
+
+                    if (LookInUserList.Count() + LookInAdminList.Count() == 0)
+                    {
+                        ProfileData user = new ProfileData();
+                        user.NameData = NameBox.Text;
+                        user.EmailData = EmailBox.Text.ToLower();
+                        UserList.Add(user);
+                        UserListBox.Items.Add(NameBox.Text);
+                        NameBox.Text = "";
+                        EmailBox.Text = "";
+                    }
+                    else
+                    {
+                        MessageBox.Show("That Email is already in use!");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("That Email is already in use!");
+                    MessageBox.Show("Thats not a name!");
                 }
             }
             else
@@ -111,7 +121,7 @@ namespace Lab5eget
             AdminListBox.SelectedIndex = -1;
             if (UserListBox.SelectedIndex > -1 && UserListBox.SelectedIndex < UserList.Count)
             {
-                EmailDisplay.Text = UserList[UserListBox.SelectedIndex].EmailData;
+                EmailDisplay.Text = UserList[UserListBox.SelectedIndex].EmailData + "  -  " + UserList[UserListBox.SelectedIndex].NameData;
                 NameBox.Text = UserList[UserListBox.SelectedIndex].NameData;
                 EmailBox.Text = UserList[UserListBox.SelectedIndex].EmailData;
                 ChangeButton.IsEnabled = true;
@@ -123,7 +133,7 @@ namespace Lab5eget
                 ChangeButton.IsEnabled = false;
                 DeleteButton.IsEnabled = false;
                 MakeAdminButton.IsEnabled = false;
-                EmailDisplay.Text = "Display Selected Profils Email";
+                EmailDisplay.Text = "Display Selected Profils Email and Name";
             }
 
         }
@@ -135,7 +145,7 @@ namespace Lab5eget
             UserListBox.SelectedIndex = -1;
             if (AdminListBox.SelectedIndex > -1 && AdminListBox.SelectedIndex < AdminList.Count)
             {
-                EmailDisplay.Text = AdminList[AdminListBox.SelectedIndex].EmailData;
+                EmailDisplay.Text = AdminList[AdminListBox.SelectedIndex].EmailData + "  -  " + AdminList[AdminListBox.SelectedIndex].NameData; ;
                 NameBox.Text = AdminList[AdminListBox.SelectedIndex].NameData;
                 EmailBox.Text = AdminList[AdminListBox.SelectedIndex].EmailData;
                 ChangeButton.IsEnabled = true;
@@ -182,14 +192,31 @@ namespace Lab5eget
             var match = Regex.Matches(EmailBox.Text.ToLower(), emailPattern);
             if (match.Count == 1)
             {
-                var LookInUserList = from Looker in UserList
-                                     where Looker.EmailData == EmailBox.Text.ToLower()
-                                     where Looker.EmailData != UserList[UserListBox.SelectedIndex].EmailData
-                                     select Looker;
-                var LookInAdminList = from Looker in AdminList
-                                      where Looker.EmailData == EmailBox.Text.ToLower()
-                                      where Looker.EmailData != AdminList[AdminListBox.SelectedIndex].EmailData
-                                      select Looker;
+                IEnumerable<ProfileData> LookInUserList;
+                IEnumerable<ProfileData> LookInAdminList;
+                if (AdminListBox.SelectedIndex > -1)
+                {
+                    LookInUserList = from Looker in UserList
+                                         where Looker.EmailData == EmailBox.Text.ToLower()
+                                        // where Looker.EmailData != UserList[UserListBox.SelectedIndex].EmailData
+                                         select Looker;
+                    LookInAdminList = from Looker in AdminList
+                                          where Looker.EmailData == EmailBox.Text.ToLower()
+                                          where Looker.EmailData != AdminList[AdminListBox.SelectedIndex].EmailData
+                                          select Looker;
+                }
+                else
+                {
+                    LookInUserList = from Looker in UserList
+                                         where Looker.EmailData == EmailBox.Text.ToLower()
+                                         where Looker.EmailData != UserList[UserListBox.SelectedIndex].EmailData
+                                         select Looker;
+                    LookInAdminList = from Looker in AdminList
+                                          where Looker.EmailData == EmailBox.Text.ToLower()
+                                      //    where Looker.EmailData != AdminList[AdminListBox.SelectedIndex].EmailData
+                                          select Looker;
+                }
+
                 if ((LookInUserList.Count() + LookInAdminList.Count()) == 0)
                 {
 
